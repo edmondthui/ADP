@@ -88,17 +88,17 @@ class App extends Component {
     render() {
         const { TODO, IN_PROGRESS, DONE } = this.state;
         return (
-            <div className="App row">
+            <div className="App">
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <div className="column-container col">
+                    <div className="column-container">
                         <h1>To-do</h1>
                         <CardColumn cards={TODO} status="TODO" />
                     </div>
-                    <div className="column-container col">
+                    <div className="column-container">
                         <h1>In Progress</h1>
                         <CardColumn cards={IN_PROGRESS} status="IN_PROGRESS" />
                     </div>
-                    <div className="column-container col">
+                    <div className="column-container">
                         <h1>Done</h1>
                         <CardColumn cards={DONE} status="DONE" />
                     </div>

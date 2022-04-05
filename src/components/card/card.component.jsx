@@ -6,9 +6,9 @@ class Card extends Component {
     render() {
         const { card, index } = this.props;
         return (
-            <Draggable draggableId={card.id} index={index}>
+            <Draggable draggableId={card.id} index={index} key={card.id}>
                 {(provided) => (
-                    <div className="card" ref={provided.innerRef} key={card.id} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <div className="card" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         {card.description}
                     </div>
                 )}
