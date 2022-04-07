@@ -90,15 +90,15 @@ class App extends Component {
                     <DragDropContext onDragEnd={this.onDragEnd}>
                         <div className="column-container">
                             <h1 className="column-title">To-do</h1>
-                            <CardColumn cards={TODO} status="TODO" />
+                            <CardColumn cards={TODO} status="TODO" updateCards={this.updateCards} />
                         </div>
                         <div className="column-container">
                             <h1 className="column-title">In Progress</h1>
-                            <CardColumn cards={IN_PROGRESS} status="IN_PROGRESS" />
+                            <CardColumn cards={IN_PROGRESS} status="IN_PROGRESS" updateCards={this.updateCards} />
                         </div>
                         <div className="column-container">
                             <h1 className="column-title">Done</h1>
-                            <CardColumn cards={DONE} status="DONE" />
+                            <CardColumn cards={DONE} status="DONE" updateCards={this.updateCards} />
                         </div>
                         <CreateCard updateCards={this.updateCards} />
                     </DragDropContext>

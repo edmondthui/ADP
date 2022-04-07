@@ -1,49 +1,85 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./create-card.styles.css";
-import {connectToKanbanDB} from "../../utils/kanban.utils.js"
+import { connectToKanbanDB } from "../../utils/kanban.utils.js";
+import Modal from "react-modal";
 
+Modal.setAppElement("#root");
 
-class CreateCard extends Component {
+const customStyles = {
+    content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "50%",
+        height: "25%",
+        boxShadow: "0px 2px 5px 5px rgba(0, 0, 0, 0.1)",
+    },
+};
 
-    constructor() {
-        super();
-        this.state = {
-            create: ''
-        }
-        this.update = this.update.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+const CreateCard = ({ updateCards }) => {
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [create, setCreateField] = useState("");
+    const [status, setStatus] = useState("");
 
-    update(field) {
+    const onStringChange = (field) => {
         return (e) => {
-            this.setState({ [field]: e.currentTarget.value });
-        }
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        if (this.state.create.length) {
-            let card = {name: this.state.create, description: this.state.create, status: "TODO"}
-            connectToKanbanDB().then((db, dbInstanceId) => {
-                db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
-                db.getCards().then((cards) => console.log(cards));
-            });
-            this.setState({create : ''});
-            this.props.updateCards();
-        }
+            setCreateField(e.currentTarget.value);
+        };
     };
 
-    render() {
-        const { handleSubmit, update} = this;
-        return (
-            <div className="create-card">
-                <form onSubmit={handleSubmit} className="create-card-form">
-                    <input onChange = {update("create")} value={this.state.create} placeholder="e.g. Bug: TextPoll not dispatching half stars" />
-                    <button>ADD NEW</button>
-                </form>
-            </div>
-        );
+    function openModal(e) {
+        e.preventDefault();
+        if (create.length) {
+            setIsOpen(true);
+        }
     }
-}
+
+    function afterOpenModal() {}
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+    const statusHandler = (e) => {
+        setStatus(e.currentTarget.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let card = { name: create, description: create, status: status };
+        connectToKanbanDB().then((db, dbInstanceId) => {
+            db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
+            db.getCards().then((cards) => console.log(cards));
+        });
+        setCreateField("");
+        updateCards();
+        closeModal();
+    };
+
+    return (
+        <div className="create-card">
+            <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles} contentLabel="Create Card Modal">
+                <form onSubmit={handleSubmit} className="modal-form">
+                    <select onChange={statusHandler}>
+                        <option value="" disabled selected>
+                            SELECT STATUS
+                        </option>
+                        <option value="TODO">To-do</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="DONE">Done</option>
+                    </select>
+                    <button>CREATE CARD</button>
+                </form>
+            </Modal>
+            <form onSubmit={openModal} className="create-card-form">
+                <input onChange={onStringChange("create")} value={create} placeholder="e.g. Bug: TextPoll not dispatching half stars" maxLength={500} />
+                <button>ADD NEW</button>
+            </form>
+        </div>
+    );
+};
 
 export default CreateCard;
