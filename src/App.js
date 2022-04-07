@@ -25,26 +25,49 @@ class App extends Component {
 
     updateCards = async () => {
         connectToKanbanDB().then((db, dbInstanceId) => {
-			db.getCardsByStatusCodes(['TODO']).then(cards => {
-				this.setState(() => {
-					return { TODO: cards };
-				})
-			})
-			db.getCardsByStatusCodes(["IN_PROGRESS"]).then((cards) => {
-				this.setState(() => {
-					return { IN_PROGRESS: cards };
-				});
-			});
-			db.getCardsByStatusCodes(["DONE"]).then((cards) => {
-				this.setState(() => {
-					return { DONE: cards };
-				});
-			});
+            db.getCards().then(cards => {
+                const todos = cards.slice().filter(card => card.status === "TODO");
+                const inProgress = cards.slice().filter(card => card.status === "IN_PROGRESS");
+                const done = cards.slice().filter(card => card.status === "DONE");
+                this.setState(() => {
+                    return {
+                        TODO: todos,
+                        IN_PROGRESS: inProgress,
+                        DONE: done
+                    }
+                })
+            }).catch(err => {
+                if (err.message === "No data found.") {
+                    this.setState(() => {
+                        return {
+                            TODO: [],
+                            IN_PROGRESS: [],
+                            DONE: []
+                        }
+                    })
+                }
+            }) // putting this here because getCardsByStatusCode was not catching error when deleting all data in DB
+			// db.getCardsByStatusCodes(['TODO'])
+            // .then(cards => {
+			// 	this.setState(() => {
+			// 		return { TODO: cards };
+			// 	})
+			// })
+			// db.getCardsByStatusCodes(["IN_PROGRESS"]).then((cards) => {
+			// 	this.setState(() => {
+			// 		return { IN_PROGRESS: cards };
+			// 	});
+			// });
+			// db.getCardsByStatusCodes(["DONE"]).then((cards) => {
+			// 	this.setState(() => {
+			// 		return { DONE: cards };
+			// 	});
+			// });
         });
     };
 
     onDragEnd = (result) => {
-        const { destination, source, draggableId } = result;
+        const { destination, source } = result;
         if (!destination) {
             return;
         }

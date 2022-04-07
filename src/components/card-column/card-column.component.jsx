@@ -7,6 +7,7 @@ class CardColumn extends Component {
 
     render() {
         const { cards, status, updateCards } = this.props;
+
         return (         
             <Droppable droppableId={status}>
                 {(provided) => (

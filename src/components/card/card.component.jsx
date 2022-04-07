@@ -1,4 +1,4 @@
-import React, { Component, useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./card.styles.css";
 import Modal from "react-modal";
@@ -25,35 +25,35 @@ const customStyles = {
 };
 
 const Card = ({ card, index, updateCards }) => {
-
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [cardId, setCardId] = useState('');
+    const [cardId, setCardId] = useState("");
 
     const getCardStyle = (isDragging, draggableStyle) => {
         if (isDragging && draggableStyle.transform !== null) draggableStyle.transform += " rotate(10deg)";
-        return ({...draggableStyle})
-    }
+        return { ...draggableStyle };
+    };
 
     const openModal = (e) => {
         setIsOpen(true);
         console.log(e.currentTarget.id);
         setCardId(e.currentTarget.id);
-    }
+    };
 
-    const afterOpenModal = () => {}
+    const afterOpenModal = () => {};
 
     const closeModal = () => {
         setIsOpen(false);
-    }
+    };
 
     const handleDelete = () => {
         connectToKanbanDB().then((db, dbInstanceId) => {
             db.deleteCardById(cardId).then((bool) => console.log(`successfully deleted card ${bool}`));
+
+            setCardId("");
+            closeModal();
+            updateCards();
         });
-        setCardId('');
-        updateCards();
-        closeModal();
-    }
+    };
 
     return (
         <Fragment>
@@ -70,7 +70,7 @@ const Card = ({ card, index, updateCards }) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
-                        id = {card.id}
+                        id={card.id}
                         style={getCardStyle(snapshot.isDragging, provided.draggableProps.style)}
                     >
                         {card.description}

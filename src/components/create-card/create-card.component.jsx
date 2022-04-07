@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./create-card.styles.css";
 import { connectToKanbanDB } from "../../utils/kanban.utils.js";
 import Modal from "react-modal";
@@ -49,22 +49,24 @@ const CreateCard = ({ updateCards }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let card = { name: create, description: create, status: status };
-        connectToKanbanDB().then((db, dbInstanceId) => {
-            db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
-            db.getCards().then((cards) => console.log(cards));
-        });
-        setCreateField("");
-        updateCards();
-        closeModal();
+        if (status) {
+            let card = { name: create, description: create, status: status };
+            connectToKanbanDB().then((db, dbInstanceId) => {
+                db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
+            });
+            setCreateField("");
+            setStatus("");
+            updateCards();
+            closeModal();
+        }
     };
 
     return (
         <div className="create-card">
             <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles} contentLabel="Create Card Modal">
                 <form onSubmit={handleSubmit} className="modal-form">
-                    <select onChange={statusHandler}>
-                        <option value="" disabled selected>
+                    <select onChange={statusHandler} value={status}>
+                        <option value="" disabled>
                             SELECT STATUS
                         </option>
                         <option value="TODO">To-do</option>
