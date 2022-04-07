@@ -46,23 +46,7 @@ class App extends Component {
                         }
                     })
                 }
-            }) // putting this here because getCardsByStatusCode was not catching error when deleting all data in DB
-			// db.getCardsByStatusCodes(['TODO'])
-            // .then(cards => {
-			// 	this.setState(() => {
-			// 		return { TODO: cards };
-			// 	})
-			// })
-			// db.getCardsByStatusCodes(["IN_PROGRESS"]).then((cards) => {
-			// 	this.setState(() => {
-			// 		return { IN_PROGRESS: cards };
-			// 	});
-			// });
-			// db.getCardsByStatusCodes(["DONE"]).then((cards) => {
-			// 	this.setState(() => {
-			// 		return { DONE: cards };
-			// 	});
-			// });
+            })
         });
     };
 
