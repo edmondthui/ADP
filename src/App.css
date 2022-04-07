@@ -12,9 +12,14 @@ body, html, #root, .App {
 
 .column-container {
   background-color: #EDF2F7;
-  height: 90%;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
+}
+
+.column-title {
+  font-size: 24px;
+  color: #000082
 }

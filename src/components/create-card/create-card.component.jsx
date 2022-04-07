@@ -40,7 +40,7 @@ class CreateCard extends Component {
         const { handleSubmit, update} = this;
         return (
             <div className="create-card">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="create-card-form">
                     <input onChange = {update("create")} value={this.state.create} placeholder="e.g. Bug: TextPoll not dispatching half stars" />
                     <button>ADD NEW</button>
                 </form>
