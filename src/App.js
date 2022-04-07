@@ -45,8 +45,6 @@ class App extends Component {
 
     onDragEnd = (result) => {
         const { destination, source, draggableId } = result;
-        console.log(result);
-
         if (!destination) {
             return;
         }
@@ -72,7 +70,6 @@ class App extends Component {
 			newCards.splice(source.index, 1);
 			const destinationCards = Array.from(this.state[destination.droppableId]);
 			destinationCards.splice(destination.index, 0, card);
-			console.log(destinationCards);
 			this.setState(() => {
 				return { 
 					[destination.droppableId]: destinationCards,

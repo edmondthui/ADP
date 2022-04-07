@@ -21,14 +21,9 @@ class CreateCard extends Component {
     }
 
     handleSubmit = (e) => {
-        console.log(e)
-        console.log(e.currentTarget)
-        console.log(this.state);
-        console.log(this.props);
         e.preventDefault();
         let card = {name: this.state.create, description: this.state.create, status: "TODO"}
         connectToKanbanDB().then((db, dbInstanceId) => {
-            console.log(dbInstanceId);
             db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
             db.getCards().then((cards) => console.log(cards));
         });
