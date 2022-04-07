@@ -1,4 +1,4 @@
-.App {
+.columns-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
@@ -6,7 +6,7 @@
   background: linear-gradient(0deg, rgba(209, 222, 234, 1) 0%, rgba(209, 222, 234, 1) 70%, rgba(237, 242, 247, 1) 90%);
 }
 
-body, html, #root, .App {
+body, html, #root, .columns-container {
   height: 100%;
 }
 
