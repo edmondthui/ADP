@@ -1,8 +1,8 @@
 .create-card {
     width: 90%;
     position: fixed;
-    top: 83%;
-    height: 12%;
+    bottom: 5%;
+    height: 100px;
     left: 50%;
     transform: translate(-50%, 0);
     background-color: white;
@@ -28,7 +28,7 @@
 
 .create-card-form input::placeholder {
     color: #99B2C8;
-    font-weight: 600;
+    font-size: 18px;
 }
 
 .create-card-form button {
