@@ -22,13 +22,15 @@ class CreateCard extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let card = {name: this.state.create, description: this.state.create, status: "TODO"}
-        connectToKanbanDB().then((db, dbInstanceId) => {
-            db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
-            db.getCards().then((cards) => console.log(cards));
-        });
-        this.setState({create : ''});
-        this.props.updateCards();
+        if (this.state.create.length) {
+            let card = {name: this.state.create, description: this.state.create, status: "TODO"}
+            connectToKanbanDB().then((db, dbInstanceId) => {
+                db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
+                db.getCards().then((cards) => console.log(cards));
+            });
+            this.setState({create : ''});
+            this.props.updateCards();
+        }
     };
 
     render() {

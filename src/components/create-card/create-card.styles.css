@@ -43,3 +43,7 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+.create-card-form button:hover {
+    cursor: pointer;
+}
