@@ -15,10 +15,11 @@ const customStyles = {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "25%",
-        height: "25%",
+        width: "50%",
+        height: "50%",
         boxShadow: "0px 2px 5px 5px rgba(0, 0, 0, 0.1)",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -27,6 +28,8 @@ const customStyles = {
 const Card = ({ card, index, updateCards }) => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [cardId, setCardId] = useState("");
+    const [cardName, setCardName] = useState(card.name);
+    const [cardDescription, setCardDescription] = useState(card.description);
 
     const getCardStyle = (isDragging, draggableStyle) => {
         if (isDragging && draggableStyle.transform !== null) draggableStyle.transform += " rotate(10deg)";
@@ -50,14 +53,41 @@ const Card = ({ card, index, updateCards }) => {
             db.deleteCardById(cardId).then((bool) => console.log(`successfully deleted card ${bool}`));
 
             setCardId("");
-            closeModal();
             updateCards();
+            closeModal();
         });
+    };
+
+    const handleUpdate = (e) => {
+        e.preventDefault();
+        const cardData = { name: cardName, description: cardDescription, status: card.status };
+        connectToKanbanDB().then((db, dbInstanceId) => {
+            db.updateCardById(cardId, cardData);
+            updateCards();
+            closeModal();
+        })
+    }
+
+    const onCardNameChange = (e) => {
+        setCardName(e.currentTarget.value);
+    }
+
+    const onCardDescriptionChange = (e) => {
+        setCardDescription(e.currentTarget.value);
     };
 
     return (
         <Fragment>
             <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles} contentLabel="Delete Card Modal">
+                <form onSubmit={handleUpdate} className="modal-form">
+                    <label htmlFor="name">Name</label>
+                    <input name="name" value={cardName} onChange={onCardNameChange} maxLength={500}/>
+                    <label htmlFor="description">Description</label>
+                    <input name="description" value={cardDescription} onChange={onCardDescriptionChange} maxLength={500}/>
+                    <button className="update-card">
+                            UPDATE CARD
+                    </button>
+                </form>    
                 <button className="delete-card" onClick={handleDelete}>
                     DELETE CARD
                 </button>
